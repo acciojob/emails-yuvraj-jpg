@@ -14,8 +14,8 @@ public class Gmail extends Email {
     public Gmail(String emailId, int inboxCapacity) {
         super(emailId);
         this.inboxCapacity = inboxCapacity;
-        this.inbox = new LinkedList<>();
-        this.trash = new ArrayList<>();
+        inbox = new LinkedList<>();
+        trash = new ArrayList<>();
     }
     public void receiveMail(Date date, String sender, String message){
         // If the inbox is full, move the oldest mail in the inbox to trash and add the new mail to inbox.
@@ -30,12 +30,19 @@ public class Gmail extends Email {
     }
 
     public void deleteMail(String message){
-        for(mails m : inbox){
-            if(m.getMessage().equals(message)){
-                mails ms = inbox.remove();
-                trash.add(ms);
+        Iterator<mails> it = inbox.iterator();
+
+
+        while (it.hasNext()) {
+            mails obj = it.next();
+            if(obj.getMessage().equals(message))
+            {
+                trash.add(obj);
+                it.remove();
+                break;
             }
         }
+
         // Each message is distinct
         // If the given message is found in any mail in the inbox, move the mail to trash, else do nothing
 
@@ -62,12 +69,16 @@ public class Gmail extends Email {
     }
 
     public int findMailsBetweenDates(Date start, Date end){
-        int count = 0;
-        for (mails m: inbox ) {
-
-            if(start.compareTo(m.getDate()) <= 0 && end.compareTo(m.getDate())==0){
+        Iterator<mails> it = inbox.iterator();
+        int count=0;
+        while (it.hasNext()) {
+            mails obj=it.next();
+//           if(obj.date.after(start) && obj.date.before(end))
+            if(obj.date.getTime()>=start.getTime() && obj.date.getTime()<=end.getTime())
+            {
                 count++;
             }
+
         }
         return count;
         //find number of mails in the inbox which are received between given dates
