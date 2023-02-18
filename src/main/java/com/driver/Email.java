@@ -27,41 +27,12 @@ public class Email {
     }
 
 
-    public boolean check(String s){
-        boolean u = false;
-        boolean l = false;
-        boolean d = false;
-        boolean spe = false;
-        String special = "[!@#$%&*()_+=|<>?{}\\[\\]~-]";
 
-        for(int i=0;i<s.length();i++){
-            char ch = s.charAt(i);
-            if(Character.isDigit(ch)){
-                d=true;
-            }
-            if(Character.isUpperCase(ch)){
-                u=true;
-            }
-            if(Character.isLowerCase(ch)){
-                l=true;
-            }
-            if(special.contains("" + ch)){
-                spe = true;
-            }
-        }
-
-        if(u && l && d && spe && s.length()>=8){
-            return true;
-        }
-        else{
-            return  false;
-        }
-
-    }
     public void changePassword(String oldPassword, String newPassword){
         if(this.password.equals(oldPassword)){
-            if(check(newPassword)){
-                this.password = newPassword;
+            if(newPassword.length()>=8 && checkUpperCase(newPassword) && checkLowerCase(newPassword) && checkNumber(newPassword) && checkSpecialCharacter(newPassword))
+            {
+                this.password=newPassword;
             }
         }
         //Change password only if the oldPassword is equal to current password and the new password meets all of the following:
@@ -70,5 +41,54 @@ public class Email {
         // 3. It contains at least one lowercase letter
         // 4. It contains at least one digit
         // 5. It contains at least one special character. Any character apart from alphabets and digits is a special character
+    }
+    public boolean checkUpperCase(String str)
+    {
+        for(int i=0;i<str.length();i++)
+        {
+            if(str.charAt(i)>='A' && str.charAt(i)<='Z')
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean checkLowerCase(String str)
+    {
+        for(int i=0;i<str.length();i++)
+        {
+            if(str.charAt(i)>='a' && str.charAt(i)<='z')
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    public boolean checkNumber(String str)
+    {
+        for(int i=0;i<str.length();i++)
+        {
+            if(str.charAt(i)>='0' && str.charAt(i)<='9')
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public boolean checkSpecialCharacter(String str)
+    {
+        boolean flag=false;
+        for (int i = 0; i < str.length(); i++) {
+
+            // Checking the character for not being a
+            // letter,digit or space
+            if (!Character.isDigit(str.charAt(i)) && !Character.isLetter(str.charAt(i)))
+            {
+                flag=true;
+                break;
+            }
+        }
+        return flag;
     }
 }
